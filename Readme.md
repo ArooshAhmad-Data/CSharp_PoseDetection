@@ -1,7 +1,7 @@
 # Pose Detection with EmguCV in C# 🏋️‍♂️🏀🎨
 
+![Project Demo](docs\result_images\result_6.png)
 ![Project Demo](docs\result_images\result_4.png)
-
 
 <div style="display: flex; justify-content:center;">
     <div style="flex: 50%; padding: 5px; align-items: center;">
