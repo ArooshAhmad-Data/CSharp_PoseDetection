@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Image Experiment2";
+}
+
+<div class="d-flex justify-content-around">
+    <div>
+        <div>
+            <canvas id="imageCanvas" width="640" height="360" style="background-color: black;"></canvas>
+            <div id="loadingText" style="display: none;"><b>The Image is Loading...</b></div>
+            <div id="drawingText" style="display: none;"><b>Drawing Pose on Image...</b></div>
+        </div>
+        <input class="form-control" type="file" id="imageInput" accept="image/*" style="max-width: 600px; margin: 10px 0 0px 0px" />
+    </div>
+</div>
+
+<script async src="~/js/image.js" type="text/javascript"></script>

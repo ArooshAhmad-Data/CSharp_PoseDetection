@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Image Form";
+}
+
+@model ImageModel
+
+<div class="d-flex" style="justify-content:space-between">
+    <div>
+        <h2>Image Upload Form</h2></br>
+        @using (Html.BeginForm("UploadImage", "Video", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+            @Html.LabelFor(m => m.Image, new {@class = "form-label" })
+                @Html.TextBoxFor(m => m.Image, new { type = "file", @class = "form-control" })
+
+                <p style="color:red;">
+                    @Html.ValidationMessageFor(m => m.Image)
+                </p>
+
+                <div style="margin:20px 0px 20px 0px">
+                    @Html.LabelFor(m => m.InferenceModelType, new {@class = "form-label" })
+                    <select name="InferenceModelType" class="form-select">
+                        <option value="body25" selected>Body25</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        Upload Image
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    @if (Model.ImagePath != null)
+    {
+        <div>
+            <img src="~/images/@Model.ImagePath" width="650"/>
+        </div>
+    }
+
+</div>
+
+

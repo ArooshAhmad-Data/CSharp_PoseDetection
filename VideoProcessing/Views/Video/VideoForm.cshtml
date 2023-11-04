@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Video Form";
+}
+
+@model VideoUploadViewModel
+
+<div class="d-flex" style="justify-content:space-between">
+    <div>
+        <h2>Video Upload Form</h2></br>
+        @using (Html.BeginForm("UploadVideo", "Video", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.VideoFile)
+                @Html.TextBoxFor(m => m.VideoFile, new {type = "file", @class = "form-control"})
+                <br />
+
+                <div>
+                    @Html.ValidationMessageFor(m => m.VideoFile)
+                </div>
+
+                <div style="margin:20px 0px 20px 0px">
+                    @Html.LabelFor(m => m.InferenceModelType, new {@class = "form-label" })
+                    <select name="InferenceModelType" class="form-select">
+                        <option value="body25" selected>Body25</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        Upload
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+        @if (!string.IsNullOrEmpty(Model.OverlayVideoFilePath))
+        {
+            <br/>
+            <div>
+                <h3>
+                    Video Results :
+                </h3>
+                <video controls width="500">
+                <source src="~/videos/@Model.OverlayVideoFilePath" type="video/mp4">
+                    <p> Your Browser does not support video tag</p>
+                </video>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+
+

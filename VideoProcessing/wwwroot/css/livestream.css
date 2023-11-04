@@ -1,0 +1,105 @@
+﻿.body {
+    max-width: 90%;
+    display: flex;
+    background: #ddd;
+}
+
+
+
+button {
+    margin: 0 3px 10px 0;
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 150px;
+    background-color: #d84a38;
+    color: white;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+button:last-of-type {
+    margin: 0;
+}
+
+h3{
+    color:red;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.video-container, .controls-container {
+    flex-basis: 49%;
+}
+
+.video-box {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin-left: -200px;
+}
+
+
+video {
+    min-width: 640px;
+    min-height: 360px;
+    max-width: 640px;
+    max-height: 360px;
+    background-color: black;
+}
+
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.control-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.video-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+.canvas-box {
+    /*border: 1px solid #ccc;*/
+    margin-bottom: 20px;
+    margin-left: 110px;
+}
+
+#frameCanvas{
+    background-color:black;
+}
+
+.thumbnail-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 5px;
+}
+        
+.thumbnail {
+    width: 80px;
+    height: 60px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+.thumbnail.active {
+    border: 2px solid blue;
+}
+
+.active {
+    border: 2px solid #f00;
+}
+
