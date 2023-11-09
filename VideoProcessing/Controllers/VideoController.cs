@@ -105,6 +105,53 @@ namespace VideoProcessing.Controllers
             return Ok(JsonConvert.SerializeObject(keyPoints));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ProcessVideoForDownload(IFormFile video)
+        {
+            if (video == null || video.Length == 0)
+            {
+                return BadRequest("Upload a file.");
+            }
+
+            var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "videos");
+            var fileName = Path.GetRandomFileName() + Path.GetExtension(video.FileName);
+            var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+            if (!Directory.Exists(uploadsFolderPath))
+            {
+                Directory.CreateDirectory(uploadsFolderPath);
+            }
+
+            await using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await video.CopyToAsync(stream);
+            }
+
+            //var outputFileName = Path.GetFileNameWithoutExtension(fileName) + "_processed" + Path.GetExtension(fileName);
+            var outputFileName = Path.GetFileNameWithoutExtension(fileName) + "_processed.mp4";
+            var outputFilePath = Path.Combine(uploadsFolderPath, outputFileName);
+            _openPoseService.DetectPoseBody25Video(filePath, outputFilePath);
+
+            System.IO.File.Delete(filePath);
+
+            var memory = new MemoryStream();
+            await using (var output = new FileStream(outputFilePath, FileMode.Open))
+            {
+                await output.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+
+            Response.OnCompleted(async () =>
+            {
+                await Task.Delay(10000);
+                if (System.IO.File.Exists(outputFilePath))
+                {
+                    System.IO.File.Delete(outputFilePath);
+                }
+            });
+
+            return File(memory, "application/octet-stream", outputFileName);
+        }
 
     }
 }

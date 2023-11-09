@@ -17,12 +17,12 @@ button {
     font-family: 'Roboto', sans-serif;
 }
 
-button:last-of-type {
-    margin: 0;
-}
+    button:last-of-type {
+        margin: 0;
+    }
 
-h3{
-    color:red;
+h3 {
+    color: red;
 }
 
 .container {
@@ -77,8 +77,8 @@ video {
     margin-left: 110px;
 }
 
-#frameCanvas{
-    background-color:black;
+#frameCanvas {
+    background-color: black;
 }
 
 .thumbnail-container {
@@ -87,7 +87,7 @@ video {
     white-space: nowrap;
     gap: 5px;
 }
-        
+
 .thumbnail {
     width: 80px;
     height: 60px;
@@ -95,11 +95,40 @@ video {
     border: 1px solid #ccc;
 }
 
-.thumbnail.active {
-    border: 2px solid blue;
-}
+    .thumbnail.active {
+        border: 2px solid blue;
+    }
 
 .active {
     border: 2px solid #f00;
 }
 
+#download {
+    margin: 0 3px 10px 0;
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 150px;
+    background-color: #0388fc;
+    color: white;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

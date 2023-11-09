@@ -3,9 +3,12 @@ const stopButton = document.getElementById("stop");
 const recordButton = document.getElementById("record");
 const playButton = document.getElementById("play");
 const liveVideo = document.getElementById("stream");
+const downloadButton = document.getElementById("download");
 const frameCanvas = document.getElementById("frameCanvas");
 const thumbnailContainer = document.getElementById("thumbnailContainer");
 const ctx = frameCanvas.getContext("2d");
+
+const downloadLoader = document.getElementById("downloadLoader")
 
 let isCameraOn = false;
 
@@ -101,7 +104,7 @@ function handleDataAvailable(event) {
 function handleStop() {
     playButton.disabled = false;
     processFrames();
-    fetchFramePoints(0); 
+    fetchFramePoints(0);
 }
 function fetchFramePoints(frameIndex) {
     let url = "GetFrameBodyPoints";
@@ -110,14 +113,14 @@ function fetchFramePoints(frameIndex) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(frameBase64 )
+        body: JSON.stringify(frameBase64)
     };
 
     fetch(url, requestOptions)
         .then(response => response.json())
         .then(data => {
             points[frameIndex] = data;
-            displayFrame(frameIndex); 
+            displayFrame(frameIndex);
         })
         .catch(error => {
             console.error('Fetch Error:', error);
@@ -155,9 +158,8 @@ function displayFrame(index) {
         thumb.classList.toggle('active', index === thumbIndex);
     });
 }
-
 function showProcessingLoader() {
-    processingLoader.style.display = "block"; // or "flex", depending on your loader's CSS
+    processingLoader.style.display = "block";
 }
 function hideProcessingLoader() {
     processingLoader.style.display = "none";
@@ -179,7 +181,7 @@ function drawPoints(index) {
     }
 
     drawLines(index);
-    
+
 }
 function drawLines(index) {
 
@@ -199,6 +201,46 @@ function drawLines(index) {
     ctx.strokeStyle = "green";
     ctx.lineWidth = 2;
     ctx.stroke();
+}
+downloadButton.onclick = function () {
+    if (recordedChunks.length == 0) {
+        alert("You must record a video to download.")
+    }
+    else {
+        downloadLoader.style.display = "block";
+        //stopCamera();
+        const recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
+        sendVideoToServer(recordedBlob);
+    }
+};
+function sendVideoToServer(blob) {
+    let formData = new FormData();
+    formData.append('video', blob, 'recorded-video.mp4');
+
+    fetch('ProcessVideoForDownload', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'processed_video.mp4');
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            downloadLoader.style.display = "none";
+        })
+        .catch(error => {
+            console.error('Error sending video to server:', error);
+        });
 }
 
 startButton.onclick = startCamera;
